@@ -1,0 +1,65 @@
+version: '3.8'
+
+#NETWORK
+networks:
+  drake-project-network:
+    driver: bridge
+
+
+services:
+  sqlserver:
+    image: 
+    container_name: c-sqlserver
+    restart: always
+    ports:
+      - "8080:1433"
+    environment:
+      ACCEPT_EULA: Y
+      MSSQL_PID: Developer 
+      SA_PASSWORD: XuanHuy123456
+    networks:
+      - drake-project-network
+    volumes:
+      - ./db/data:/var/opt/mssql/data
+      - ./db/log:/var/opt/mssql/log
+      - ./db/secrets:/var/opt/mssql/secrets
+      - ./db/backup:/var/opt/mssql/backup
+
+  node:
+    build: 
+      dockerfile: Dockerfile
+      context: ./Nodejs
+    container_name: c-node
+    restart: always
+    ports:
+      - "8081:8081"
+    networks:
+      - drake-project-network
+    volumes:
+      - ./outsideAssets:/app/outsideAssets
+
+  drake:
+    build: 
+      dockerfile: Dockerfile
+      context: ./Drake
+    container_name: c-drake
+    restart: always
+    ports:
+      - "8082:8082"
+    networks:
+      - drake-project-network
+    volumes:
+      - ./outsideAssets:/app/outsideAssets 
+
+  admin:
+    build: 
+      dockerfile: Dockerfile
+      context: ./Admin
+    container_name: c-admin
+    restart: always
+    ports:
+      - "8083:8083"
+    networks:
+      - drake-project-network
+    volumes:
+      - ./outsideAssets:/app/outsideAssets  
