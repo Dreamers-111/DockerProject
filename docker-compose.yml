@@ -8,7 +8,7 @@ networks:
 
 services:
   sqlserver:
-    image: 
+    image: mcr.microsoft.com/mssql/server:2019-latest
     container_name: c-sqlserver
     restart: always
     ports:
