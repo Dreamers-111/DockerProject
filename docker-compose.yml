@@ -8,7 +8,7 @@ networks:
 
 services:
   sqlserver:
-    image: 
+    image: mcr.microsoft.com/azure-sql-edge
     container_name: c-sqlserver
     restart: always
     ports:
